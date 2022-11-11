@@ -2,7 +2,7 @@
   "name": "apollo-server",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "compile": "tsc",
