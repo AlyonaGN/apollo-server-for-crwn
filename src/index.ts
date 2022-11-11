@@ -1,10 +1,13 @@
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
-import { config } from './config';
-import { firebaseDB } from './db';
-import { loadSchema } from './utils';
-import expressPlayground from 'graphql-playground-middleware-express'
-import { resolvers } from './resolvers';
+import { config } from './config.mjs';
+import { firebaseDB } from './db.mjs';
+import { loadSchema } from './utils.mjs';
+import { resolvers } from './resolvers/index.mjs';
+import dotenv from 'dotenv';
+/* import expressPlayground from 'graphql-playground-middleware-express' */
+
+dotenv.config()
 
 
 async function start() {
@@ -20,9 +23,10 @@ async function start() {
   })
   await server.start()
   server.applyMiddleware({ app })
+  console.log(config)
 
   app.get('/', (req, res) => res.end('Welcome to the CrownClothingAPI'))
-  app.get('/playground', expressPlayground({ endpoint: '/graphql' }))
+  /* app.get('/playground', expressPlayground.default({ endpoint: '/graphql' })) */
   app.listen({ port: config.port }, () =>
       console.log(
           `GraphQL Server running @ http://localhost:${config.port}${server.graphqlPath}`
@@ -31,3 +35,5 @@ async function start() {
 }
 
 start()
+
+
