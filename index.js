@@ -4,10 +4,7 @@ import { config } from './config.mjs';
 import { firebaseDB } from './db.mjs';
 import { loadSchema } from './utils.mjs';
 import { resolvers } from './resolvers/index.mjs';
-import dotenv from 'dotenv';
 /* import expressPlayground from 'graphql-playground-middleware-express' */
-
-dotenv.config()
 
 
 async function start() {
@@ -17,7 +14,7 @@ async function start() {
   const context = { db }
 
   const server = new ApolloServer({
-      typeDefs: loadSchema("src/schema.graphql"),
+      typeDefs: loadSchema("./schema.graphql"),
       resolvers,
       context
   })

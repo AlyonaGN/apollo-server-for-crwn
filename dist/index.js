@@ -12,7 +12,7 @@ async function start() {
     const db = firebaseDB.firestore();
     const context = { db };
     const server = new ApolloServer({
-        typeDefs: loadSchema("src/schema.graphql"),
+        typeDefs: loadSchema("./schema.graphql"),
         resolvers,
         context
     });

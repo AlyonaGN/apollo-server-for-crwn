@@ -1,7 +1,7 @@
 import { readFileSync } from "fs"
-import { buildSchema, GraphQLSchema } from "graphql"
+import { buildSchema } from "graphql"
 
-export const loadSchema = (fileName: string): GraphQLSchema => {
+export const loadSchema = (fileName) => {
     const sdlString = readFileSync(fileName, {
       encoding: "utf8",
     })
