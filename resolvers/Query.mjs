@@ -1,18 +1,16 @@
 import { GraphQLError } from "graphql"
 
 export const queryResolvers = {
-    collections: async (parent, args, { db }) => {
+    categories: async (parent, args, { db }) => {
         const snapshot = await db.collection('categories').get()
         const data = []
-        snapshot.forEach((doc) => {
-            data.push({ id: doc.id, ...doc.data() })
-        })
+        snapshot.forEach(doc => data.push({ id: doc.id, ...doc.data() }))
         return data
     },
-    collection: async (parent, { id }, { db }) => {
+    getCategoryById: async (parent, { id }, { db }) => {
         const ref = db.collection('categories').doc(id)
-        const collection = await ref.get()
-        if (!collection.exists) {
+        const category = await ref.get()
+        if (!category.exists) {
             throw new GraphQLError('Invalid argument value', {
                 extensions: {
                     code: 'BAD_USER_INPUT',
@@ -20,23 +18,13 @@ export const queryResolvers = {
                 }
             })
         } else {
-            return collection.data()
+            return {id: category.id, ...category.data()}
         }
     },
-    getCollectionByTitle: async (parent, { title }, { db }) => {
-        const ref = db.collection('categories')
-        const snapshot = await ref.where('title', '==', title).get()
-        if (snapshot.empty) {
-            throw new GraphQLError('No collection found', {
-                extensions: {
-                    code: 'BAD_USER_INPUT',
-                    argumentName: 'title'
-                }
-            })
-        } else {
-            const [collection] = snapshot.docs
-            return {id: collection.id, ...collection.data()}
-        }
-    }
+    getCart: async (parent, { userId }, { db }) => {
+        const ref = db.collection('carts').doc(userId)
+        const cart = await ref.get()
+        return cart.exists ? {id: cart.id, ...cart.data()} : {id: userId, items: []}
+    } 
 }
 

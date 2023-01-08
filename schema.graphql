@@ -1,18 +1,33 @@
+type Query {
+    categories: [Category!]!
+    getCategoryById(id: ID!): Category
+    getCart(userId: ID!): Cart
+}
 
-    type Query {
-        collections: [Collection!]!
-        collection(id: ID!): Collection
-        getCollectionByTitle(title: String): Collection
-    }
-    type Collection {
-        id: ID!
-        title: String!
-        items: [Item!]!
-    }
-    type Item {
-        id: ID!
-        name: String!
-        price: Float!
-        imageUrl: String!
-        collection: Collection
-    }
+type Mutation {
+    addToCart(userId: ID!, categoryId: ID!, productId: ID! ): Cart
+    removeFromCart(userId: ID!, productId: ID!): Cart
+    clearCartItem(userId: ID!, productId: ID!): Cart
+}
+type Cart {
+    id: ID!
+    items: [CartItem]!
+}
+type CartItem {
+    id: ID!
+    name: String!
+    price: Float!
+    imageUrl: String!
+    quantity: Int!
+}
+type Category {
+    id: ID!
+    title: String!
+    items: [Product!]!
+}
+type Product {
+    id: ID!
+    name: String!
+    price: Float!
+    imageUrl: String!
+}

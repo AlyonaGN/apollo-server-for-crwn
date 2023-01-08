@@ -4,7 +4,6 @@ import { config } from './config.mjs';
 import { firebaseDB } from './db.mjs';
 import { loadSchema } from './utils.mjs';
 import { resolvers } from './resolvers/index.mjs';
-import expressPlayground from 'graphql-playground-middleware-express'
 
 
 async function start() {
@@ -16,14 +15,18 @@ async function start() {
   const server = new ApolloServer({
       typeDefs: loadSchema("./schema.graphql"),
       resolvers,
-      context
+      context,
+      playground: {
+        settings: {
+          'editor.theme': 'light',
+        }
+      }      
   })
   await server.start()
   server.applyMiddleware({ app })
   console.log(config)
 
-  app.get('/', (req, res) => res.end('Welcome to the CrownClothingAPI'))
-  app.get('/playground', expressPlayground.default({ endpoint: '/graphql' }))
+  app.get('/', (req, res) => res.end('Welcome to the CrownClothingAPI')),
   app.listen({ port: config.port }, () =>
       console.log(
           `GraphQL Server running @ http://localhost:${config.port}${server.graphqlPath}`
